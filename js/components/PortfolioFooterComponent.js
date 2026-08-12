@@ -232,16 +232,12 @@ function PortfolioFooterComponent() {
           <div className="footer-links-col">
             <span className="col-label">NAVIGATION</span>
             <a href="#page-1" className="footer-nav-link">Home</a>
-            <a href="#work" className="footer-nav-link">Client Work</a>
-            <a href="#about" className="footer-nav-link">Studio Archives</a>
+            <a href="#work" className="footer-nav-link">Personal Projects</a>
           </div>
 
           <div className="footer-links-col">
             <span className="col-label">CONNECT</span>
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="footer-nav-link">GitHub ↗</a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="footer-nav-link">Twitter / X ↗</a>
             <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="footer-nav-link">LinkedIn ↗</a>
-            <a href="https://figma.com" target="_blank" rel="noreferrer" className="footer-nav-link">Figma ↗</a>
           </div>
         </div>
 

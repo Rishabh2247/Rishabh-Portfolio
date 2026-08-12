@@ -3,6 +3,8 @@ const { useState, useEffect } = React;
 function PortfolioFooterComponent() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [copied, setCopied] = useState(false);
   const [timeStr, setTimeStr] = useState('');
 
@@ -26,16 +28,44 @@ function PortfolioFooterComponent() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errorMsg) setErrorMsg('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.message) {
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setFormData({ name: '', email: '', message: '' });
-      }, 4000);
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    setIsSubmitting(true);
+    setErrorMsg('');
+
+    try {
+      // Send form data as email to rishabhy2247@gmail.com via FormSubmit AJAX service
+      const response = await fetch('https://formsubmit.co/ajax/rishabhy2247@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `⚡ New Portfolio Enquiry from ${formData.name}`,
+          _template: 'table'
+        })
+      });
+
+      const result = await response.json();
+      if (response.ok || result.success === 'true' || result.success === true) {
+        setSubmitted(true);
+      } else {
+        throw new Error(result.message || 'Submission failed');
+      }
+    } catch (err) {
+      console.error('Contact form submission error:', err);
+      setErrorMsg('Could not send automatically. You can also send via mail app:');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -97,10 +127,21 @@ function PortfolioFooterComponent() {
             {submitted ? (
               <div className="form-success-state">
                 <div className="success-icon">✨</div>
-                <h4 className="success-title">Message Received!</h4>
+                <h4 className="success-title">Enquiry Sent Successfully!</h4>
                 <p className="success-desc">
-                  Thanks for reaching out, <strong>{formData.name || 'friend'}</strong>. I'll get back to you shortly!
+                  Thanks for reaching out, <strong>{formData.name || 'friend'}</strong>. Your enquiry has been sent to <strong>rishabhy2247@gmail.com</strong>. I'll get back to you shortly!
                 </p>
+                <button 
+                  type="button" 
+                  className="footer-form-submit-btn" 
+                  style={{ marginTop: '14px', width: 'auto' }}
+                  onClick={() => {
+                    setSubmitted(false);
+                    setFormData({ name: '', email: '', message: '' });
+                  }}
+                >
+                  Send Another Message 💬
+                </button>
               </div>
             ) : (
               <form className="footer-contact-form" onSubmit={handleSubmit}>
@@ -115,6 +156,7 @@ function PortfolioFooterComponent() {
                       onChange={handleChange}
                       placeholder="John Doe" 
                       required 
+                      disabled={isSubmitting}
                       className="contact-input-field"
                     />
                   </div>
@@ -126,8 +168,9 @@ function PortfolioFooterComponent() {
                       name="email"
                       value={formData.email} 
                       onChange={handleChange}
-                      placeholder="rishabhy2247@gmail.com" 
+                      placeholder="john@example.com" 
                       required 
+                      disabled={isSubmitting}
                       className="contact-input-field"
                     />
                   </div>
@@ -143,12 +186,30 @@ function PortfolioFooterComponent() {
                     placeholder="Tell me about your idea or project..." 
                     rows="3" 
                     required 
+                    disabled={isSubmitting}
                     className="contact-textarea-field"
                   />
                 </div>
 
-                <button type="submit" className="footer-form-submit-btn">
-                  <span>Send Message 🚀</span>
+                {errorMsg && (
+                  <div className="form-error-msg" style={{ color: '#ff5555', fontSize: '0.84rem', fontFamily: 'Space Grotesk, sans-serif', margin: '4px 0' }}>
+                    ⚠️ {errorMsg}{' '}
+                    <a 
+                      href={`mailto:rishabhy2247@gmail.com?subject=Enquiry from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`}
+                      style={{ color: '#ff8533', textDecoration: 'underline', fontWeight: 600 }}
+                    >
+                      Click here to email directly ↗
+                    </a>
+                  </div>
+                )}
+
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="footer-form-submit-btn"
+                  style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'wait' : 'pointer' }}
+                >
+                  <span>{isSubmitting ? 'Sending Enquiry... ⏳' : 'Send Message 🚀'}</span>
                 </button>
               </form>
             )}

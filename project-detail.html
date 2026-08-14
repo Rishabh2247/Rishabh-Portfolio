@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Max Verstappen Fan Website — Project Overview</title>
+  <link rel="icon" type="image/png" href="./Logo.png" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- GSAP 3 Animation CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --bg-cream: #f7f4ef;
+      --bg-white: #ffffff;
+      --text-dark: #181616;
+      --text-muted: #4a4645;
+      --text-light: #787370;
+      --accent-orange: #e65200;
+      --accent-orange-light: #ff6600;
+      --accent-orange-soft: #fff2ea;
+      --border-subtle: #e5dfd7;
+      --border-orange: rgba(230, 82, 0, 0.3);
+      --shadow-img: 0 20px 50px rgba(0, 0, 0, 0.07), 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Main Container - Full Viewport Width */
+    .page-wrapper {
+      width: 100%;
+      max-width: 100%;
+      background-color: var(--bg-cream);
+      padding: 48px 64px 100px 64px;
+      position: relative;
+    }
+
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 24px 20px 60px 20px;
+      }
+    }
+
+    /* Top Breadcrumb Navigation */
+    .breadcrumb-nav {
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .breadcrumb-link {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb-link:hover {
+      color: var(--accent-orange);
+    }
+
+    .breadcrumb-active {
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    /* Header Hero Section - Full Width */
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .brand-title-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Official Max Verstappen Logo PNG */
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .brand-logo-img {
+      height: 60px;
+      width: auto;
+      max-width: 280px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.04));
+    }
+
+    .brand-main-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 4.2rem;
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-main-title span.orange-text {
+      color: var(--accent-orange);
+      font-family: 'Instrument Serif', serif;
+    }
+
+    .header-meta-right {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .category-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--text-dark);
+      text-transform: uppercase;
+    }
+
+    .year-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    /* Main Introduction Lead Text - Full Width */
+    .lead-description {
+      font-size: 1.4rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      font-weight: 400;
+      width: 100%;
+      margin-bottom: 36px;
+      letter-spacing: -0.2px;
+    }
+
+    .lead-description strong {
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* "See it live ↗" Pill Button */
+    .live-button-container {
+      margin-bottom: 48px;
+      width: 100%;
+    }
+
+    .see-live-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 30px;
+      border: 1.5px solid var(--text-dark);
+      background: transparent;
+      color: var(--text-dark);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .see-live-btn:hover {
+      background: var(--text-dark);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .see-live-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.25s ease;
+    }
+
+    .see-live-btn:hover svg {
+      transform: translate(2px, -2px);
+    }
+
+    /* Services Section */
+    .services-section {
+      margin-bottom: 56px;
+      width: 100%;
+    }
+
+    .services-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 18px;
+    }
+
+    .services-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .service-tag {
+      padding: 10px 24px;
+      border-radius: 30px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.75);
+      color: var(--text-dark);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .service-tag:hover {
+      background: var(--bg-white);
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+    }
+
+    /* Challenge & Role 2-Column Grid - Full Width */
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      margin-bottom: 72px;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .two-col-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    .col-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .col-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .col-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* Full-Width Showcase Gallery (1:2 Format Layout) */
+    .gallery-showcase-container {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      margin-bottom: 80px;
+      width: 100%;
+    }
+
+    .gallery-hero-card {
+      width: 100%;
+      max-height: 560px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: var(--shadow-img);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery-two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-two-col-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .gallery-hero-card {
+        max-height: 380px;
+      }
+    }
+
+    .gallery-img-card {
+      width: 100%;
+      max-height: 440px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: var(--shadow-img);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+    }
+
+    .gallery-hero-card:hover,
+    .gallery-img-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12);
+    }
+
+    .gallery-hero-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: 50% 32%;
+      transform: translateY(-25px) scale(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-img-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    /* Redesigned Technology Stack Section - Matching Upper Page Aesthetics */
+    .tech-architecture-section {
+      width: 100%;
+      margin-bottom: 80px;
+    }
+
+    .tech-section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      width: 100%;
+    }
+
+    .tech-group-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 32px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .tech-group-card:hover {
+      background: var(--bg-white);
+      border-color: var(--accent-orange);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(230, 82, 0, 0.08);
+    }
+
+    .tech-group-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+    }
+
+    .tech-group-heading::before {
+      content: '';
+      width: 8px;
+      height: 20px;
+      background: var(--accent-orange);
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .tech-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tech-pill-item {
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-white);
+      color: var(--text-dark);
+      font-size: 0.92rem;
+      font-weight: 500;
+      line-height: 1.4;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .tech-pill-item:hover {
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+      background: var(--accent-orange-soft);
+      transform: translateY(-2px);
+    }
+
+    .tech-pill-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent-orange);
+      border-radius: 50%;
+    }
+
+    /* Footer Navigation - Full Width */
+    .page-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-light);
+      font-size: 0.92rem;
+      width: 100%;
+    }
+
+    .footer-back-btn {
+      color: var(--accent-orange);
+      font-weight: 700;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .footer-back-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+<body>
+
+  <!-- Main Editorial Page Wrapper (Full Width) -->
+  <div class="page-wrapper">
+
+    <!-- Top Breadcrumb Navigation Bar -->
+    <nav class="breadcrumb-nav">
+      <a href="./index.html#work" class="breadcrumb-link">
+        ‹ Projects / <span class="breadcrumb-active" id="crumbProjectTitle">Max Verstappen Fan Website</span>
+      </a>
+    </nav>
+
+    <!-- Hero Header Section -->
+    <header class="hero-header">
+      <div class="brand-title-box">
+        <!-- Official Max Verstappen Logo PNG -->
+        <div class="brand-logo-container">
+          <img src="./Porjects/Max_Verstappen_Logo.png" alt="Max Verstappen Official Logo" class="brand-logo-img" />
+        </div>
+
+        <h1 class="brand-main-title" id="mainHeaderTitle">
+          The <span class="orange-text">Max Verstappen</span> Fan Website
+        </h1>
+      </div>
+
+      <div class="header-meta-right">
+        <span class="category-label" id="metaCategoryLabel">FAN WEBSITE</span>
+        <span class="year-label" id="metaYearLabel">2026</span>
+      </div>
+    </header>
+
+    <!-- Main Intro Lead Paragraph -->
+    <p class="lead-description" id="leadDescriptionText">
+      <strong>Max Verstappen Fan Website</strong> is what happens when authentic Formula 1 telemetry meets high-octane web design ambition — a project built from scratch with custom WebGL liquid shaders, GSAP ScrollTrigger timeline motion, and procedural topographic noise graphics.
+    </p>
+
+    <!-- "See it live ↗" Button -->
+    <div class="live-button-container" id="liveBtnContainer">
+      <a href="https://max-verstappen-beryl.vercel.app/" target="_blank" rel="noopener noreferrer" class="see-live-btn" id="seeLiveLink">
+        <span>See it live</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Top Skills Section -->
+    <section class="services-section">
+      <h2 class="services-title">Top skills:</h2>
+      <div class="services-tags-row" id="skillsTagsContainer">
+        <!-- Dynamically Populated Top Skills Pills -->
+      </div>
+    </section>
+
+    <!-- Challenge & Role 2-Column Grid Section -->
+    <section class="two-col-grid">
+      <div class="col-box">
+        <h3 class="col-title">Challenge:</h3>
+        <p class="col-desc" id="challengeText">
+          Redesign the Max Verstappen fan experience from the ground up — new visual language, modern interactive shaders, but every pixel still feels like raw 350km/h telemetry and championship performance.
+        </p>
+      </div>
+
+      <div class="col-box">
+        <h3 class="col-title">Role:</h3>
+        <p class="col-desc" id="roleText">
+          Sole visual designer and vibe frontend coder, responsible for defining the visual language, WebGL liquid glass distortion shaders, GSAP animation timelines, and procedural contour background engine.
+        </p>
+      </div>
+    </section>
+
+    <!-- Gallery Showcase Section (Full Width 1:2 Format) -->
+    <section class="gallery-showcase-container">
+      <div class="gallery-hero-card">
+        <img src="./Porjects/Max Mockup 2 (1).png" alt="Max Verstappen Mockup 1" id="imgMockup1" />
+      </div>
+
+      <div class="gallery-two-col-grid">
+        <div class="gallery-img-card">
+          <img src="./Porjects/Max Website Mockup.png" alt="Max Verstappen Mockup 2" id="imgMockup2" />
+        </div>
+
+        <div class="gallery-img-card">
+          <img src="./Porjects/Max Mockup 3.png" alt="Max Verstappen Mockup 3" id="imgMockup3" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Redesigned Tech Stack Architecture Breakdown Section -->
+    <section class="tech-architecture-section">
+      <h2 class="tech-section-title">Technology Stack & Architecture Breakdown</h2>
+      
+      <div class="tech-grid" id="techGridContainer">
+        <!-- Dynamically Populated Redesigned Tech Cards -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <div>© 2026 Rishabh Yadav Portfolio — All Rights Reserved</div>
+      <a href="./index.html#work" class="footer-back-btn">‹ Back to Projects</a>
+    </footer>
+
+  </div>
+
+  <script>
+    // Project Data Database
+    const projectsData = {
+      '1': {
+        title: 'The Max Verstappen Fan Website',
+        titleFormatted: 'The <span class="orange-text">Max Verstappen</span> Fan Website',
+        crumbTitle: 'Max Verstappen Fan Website',
+        category: 'FAN WEBSITE',
+        year: '2026',
+        leadText: '<strong>Max Verstappen Fan Website</strong> is what happens when authentic Formula 1 telemetry meets high-octane web design ambition — a project built from scratch with custom WebGL liquid shaders, GSAP ScrollTrigger timeline motion, and procedural topographic noise graphics.',
+        liveUrl: 'https://max-verstappen-beryl.vercel.app/',
+        skills: [
+          'Vite 5.1 & Rollup',
+          'HTML5 & Vanilla CSS',
+          'Vanilla ES6+ JavaScript',
+          'GSAP v3.12.5 & ScrollTrigger',
+          'Lenis Smooth Scroll Engine',
+          'WebGL & Custom GLSL Shaders',
+          'HTML5 Canvas 2D Engine',
+          'Simplex Noise & Marching Squares'
+        ],
+        services: ['Website design', 'Visual branding', 'WebGL Shaders', 'GSAP Motion Timeline', 'Procedural Canvas'],
+        challenge: "Redesign the Max Verstappen fan experience from the ground up — new visual language, modern interactive shaders, but every pixel still feels like raw 350km/h telemetry and championship performance.",
+        role: "Sole visual designer and vibe frontend coder, responsible for defining the visual language, WebGL liquid glass distortion shaders, GSAP animation timelines, and procedural contour background engine.",
+        images: [
+          './Porjects/Max Mockup 2 (1).png',
+          './Porjects/Max Website Mockup.png',
+          './Porjects/Max Mockup 3.png'
+        ],
+        techStack: [
+          {
+            title: 'Build Tool & Bundler',
+            items: [
+              'Vite (^5.1.0) — Modern frontend dev server and bundler',
+              'Rollup — Multi-page setup using index.html and article.html'
+            ]
+          },
+          {
+            title: 'Core Frontend & Structure',
+            items: [
+              'HTML5 — Semantic multi-page architecture',
+              'Vanilla ES6+ JavaScript — Native ES modules with custom controllers',
+              'Vanilla CSS — Custom styling system (style.css & articleMinimal.css)'
+            ]
+          },
+          {
+            title: 'Animation & Scrolling',
+            items: [
+              'GSAP v3.12.5 — High-performance UI animation timelines & transitions',
+              'GSAP ScrollTrigger — Scroll-driven pinned sections & scroll motion',
+              'Lenis v1.1.18 — Smooth-scrolling inertia-based scroll engine'
+            ]
+          },
+          {
+            title: 'Graphics, Shaders & Canvas',
+            items: [
+              'WebGL & Custom GLSL Shaders — Fluid liquid cursor glass distortion (liquidShader.js)',
+              'HTML5 Canvas 2D — Real-time background contours (contourEngine.js)',
+              'Simplex Noise + Marching Squares — Procedural noise isolines (simplex-noise ^4.0.1)'
+            ]
+          }
+        ]
+      },
+      '2': {
+        title: 'Chrome Spikes AI',
+        titleFormatted: '<span class="orange-text">Chrome Spikes</span> AI System',
+        crumbTitle: 'Chrome Spikes AI',
+        category: 'GENERATIVE LAB',
+        year: '2026',
+        leadText: '<strong>Chrome Spikes AI</strong> is a generative design system creating metallic organic geometries reacting in real-time to user audio frequencies.',
+        liveUrl: null,
+        skills: ['React 18', 'Midjourney API', 'Web Audio API FFT', 'GSAP Shaders'],
+        services: ['Generative Design', 'Shader Coding', 'Audio Reactive UI', 'WebGL Viewport'],
+        challenge: "Synthesize 3D metallic organic forms dynamically in response to audio spectrum data with zero latency.",
+        role: "Generative Shader Engineer & UI Architect.",
+        images: ['./Project 2.jpeg'],
+        techStack: [
+          {
+            title: 'Generative AI Engine',
+            items: ['React 18 state management', 'Midjourney API & Latent Space Synthesis']
+          },
+          {
+            title: 'Audio Reactive Shaders',
+            items: ['Web Audio API FFT Frequency Analyzer', 'GSAP Vertex Displacement Shaders']
+          }
+        ]
+      },
+      '3': {
+        title: 'Gentle Monster AI',
+        titleFormatted: '<span class="orange-text">Gentle Monster</span> VR Concept',
+        crumbTitle: 'Gentle Monster AI',
+        category: 'VR CONCEPT',
+        year: '2025',
+        leadText: '<strong>Gentle Monster AI</strong> is a spatial virtual reality eyewear showcase with interactive 360-degree glassmorphic material preview.',
+        liveUrl: null,
+        skills: ['React Three Fiber', 'Three.js Glass Transmission', 'Figma Spatial Design', 'TailwindCSS'],
+        services: ['Spatial VR UI', 'Eyewear Showcase', 'Three.js Material Shaders'],
+        challenge: "Recreate real-life glass light refraction and chromatic aberration inside a web browser viewport.",
+        role: "Spatial Designer & 3D Interactive Developer.",
+        images: ['./Project 3.jpeg'],
+        techStack: [
+          {
+            title: 'Spatial 3D Engine',
+            items: ['React Three Fiber 3D Scene Controller', 'Three.js Glass Transmission Shader']
+          }
+        ]
+      }
+    };
+
+    // Parse URL Parameter ?id=...
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get('id') || '1';
+    const project = projectsData[projectId] || projectsData['1'];
+
+    // Render Data into DOM
+    document.title = `${project.crumbTitle} — Project Overview`;
+    document.getElementById('crumbProjectTitle').textContent = project.crumbTitle;
+    document.getElementById('mainHeaderTitle').innerHTML = project.titleFormatted;
+    document.getElementById('metaCategoryLabel').textContent = project.category;
+    document.getElementById('metaYearLabel').textContent = project.year;
+    document.getElementById('leadDescriptionText').innerHTML = project.leadText;
+    document.getElementById('challengeText').textContent = project.challenge;
+    document.getElementById('roleText').textContent = project.role;
+
+    // Live URL Button
+    if (project.liveUrl) {
+      document.getElementById('seeLiveLink').href = project.liveUrl;
+    } else {
+      document.getElementById('liveBtnContainer').style.display = 'none';
+    }
+
+    // Render Top Skills Tags
+    const skillsContainer = document.getElementById('skillsTagsContainer');
+    if (skillsContainer) {
+      skillsContainer.innerHTML = '';
+      const skillsList = project.skills || project.services || [];
+      skillsList.forEach(sk => {
+        const tag = document.createElement('span');
+        tag.className = 'service-tag';
+        tag.textContent = sk;
+        skillsContainer.appendChild(tag);
+      });
+    }
+
+    // Render Gallery Images in 1:2 Format (1 Full-Width Hero + 2 Side-by-Side Grid)
+    const galleryContainer = document.querySelector('.gallery-showcase-container');
+    galleryContainer.innerHTML = '';
+    
+    if (project.images && project.images.length > 0) {
+      // Row 1: 1 Featured Full-Width Hero Image
+      const heroCard = document.createElement('div');
+      heroCard.className = 'gallery-hero-card';
+      heroCard.innerHTML = `<img src="${project.images[0]}" alt="${project.crumbTitle} Main Showcase" />`;
+      galleryContainer.appendChild(heroCard);
+
+      // Row 2: 2 Side-by-Side Images in Grid
+      if (project.images.length > 1) {
+        const grid2Col = document.createElement('div');
+        grid2Col.className = 'gallery-two-col-grid';
+
+        for (let i = 1; i < project.images.length; i++) {
+          const card = document.createElement('div');
+          card.className = 'gallery-img-card';
+          card.innerHTML = `<img src="${project.images[i]}" alt="${project.crumbTitle} Showcase ${i + 1}" />`;
+          grid2Col.appendChild(card);
+        }
+
+        galleryContainer.appendChild(grid2Col);
+      }
+    }
+
+    // Render Tech Stack Architecture Cards Matching Upper Page Pill Aesthetics
+    const techGrid = document.getElementById('techGridContainer');
+    techGrid.innerHTML = '';
+    project.techStack.forEach(group => {
+      const card = document.createElement('div');
+      card.className = 'tech-group-card';
+      card.innerHTML = `
+        <h3 class="tech-group-heading">${group.title}</h3>
+        <div class="tech-pills-row">
+          ${group.items.map(item => `
+            <div class="tech-pill-item">
+              <span class="tech-pill-dot"></span>
+              <span>${item}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      techGrid.appendChild(card);
+    });
+
+    // High-Impact GSAP Entrance Reveal Timeline for All Page Elements
+    if (typeof gsap !== 'undefined') {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      // 1. Navigation Breadcrumb slide down
+      tl.fromTo('.breadcrumb-nav', { y: -25, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.15);
+
+      // 2. Logo elastic scale pop
+      tl.fromTo('.brand-logo-img', { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.7)' }, 0.25);
+
+      // 3. Main Title typography blur & slide reveal
+      tl.fromTo('.brand-main-title', { y: 40, opacity: 0, filter: 'blur(10px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85 }, 0.3);
+
+      // 4. Meta Badge slide in
+      tl.fromTo('.header-meta-right', { x: 30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7 }, 0.35);
+
+      // 5. Lead Description & Live Button
+      tl.fromTo('.lead-description', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 0.4);
+      tl.fromTo('.see-live-btn', { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.5)' }, 0.45);
+
+      // 6. Top Skills section & Pill tags stagger
+      tl.fromTo('.services-title', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.5);
+      tl.fromTo('.service-tag', { y: 15, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, stagger: 0.04, ease: 'back.out(1.4)' }, 0.55);
+
+      // 7. Challenge & Role 2-Column stagger
+      tl.fromTo('.col-box', { y: 35, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75, stagger: 0.15 }, 0.6);
+
+      // 8. Showcase Gallery (1:2 format)
+      tl.fromTo('.gallery-hero-card', { y: 45, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.85 }, 0.65);
+      tl.fromTo('.gallery-img-card', { y: 45, opacity: 0, scale: 0.95 }, { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15 }, 0.75);
+
+      // 9. Tech Architecture section & Cards stagger
+      tl.fromTo('.tech-section-title', { y: 25, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.8);
+      tl.fromTo('.tech-group-card', { y: 35, opacity: 0, scale: 0.97 }, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1 }, 0.85);
+    }
+  </script>
+</body>
+</html>

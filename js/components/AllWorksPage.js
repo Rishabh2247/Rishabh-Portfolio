@@ -8,13 +8,13 @@ function AllWorksPage({ onClose }) {
   const allProjects = [
     {
       id: 1,
-      title: 'Cyber Vision 01',
+      title: 'Max Verstappen Fan Website',
       category: '3D & SHADERS',
-      role: 'AI & Chrome Sculpting',
+      role: 'FAN WEBSITE',
       year: '2026',
-      image: './Project 1.jpeg',
-      description: 'High-precision 3D chrome sculpting engine with raytraced specular reflections and dynamic lighting shaders.',
-      tech: ['React', 'Three.js', 'GLSL Shaders', 'WebGPU']
+      image: './Porjects/Max Website Mockup.png',
+      description: 'Interactive Formula 1 fan experience featuring WebGL liquid cursor shaders, GSAP ScrollTrigger timeline animation, procedural topographic contour engine, and Lenis smooth scrolling.',
+      tech: ['Vite 5.1', 'WebGL & GLSL', 'GSAP ScrollTrigger', 'Lenis 1.1.18', 'Simplex Noise', 'HTML5 Canvas']
     },
     {
       id: 2,
@@ -128,7 +128,7 @@ function AllWorksPage({ onClose }) {
             <div 
               key={proj.id} 
               className="all-works-card"
-              onClick={() => setSelectedProject(proj)}
+              onClick={() => window.location.href = `./project-detail.html?id=${proj.id}`}
             >
               <div className="works-card-img-box">
                 <img src={proj.image} alt={proj.title} className="works-card-img" />
